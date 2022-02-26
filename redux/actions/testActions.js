@@ -1,4 +1,4 @@
-import { GET_TESTS } from './types';
+import { GET_TESTS, DELETE_TEST } from './types';
 import axios from 'axios';
 
 const uri = 'https://full-stack-basic-backend.herokuapp.com';
@@ -10,6 +10,20 @@ export const getTests = () => async (dispatch) => {
 		dispatch({
 			type: GET_TESTS,
 			payload: res.data,
+		});
+	} catch (err) {
+		console.error(err.error);
+	}
+};
+
+// delete test
+export const deleteTest = (id) => async (dispatch) => {
+	try {
+		await axios.delete(`${uri}/api/tests/${id}`);
+
+		dispatch({
+			type: DELETE_TEST,
+			payload: id,
 		});
 	} catch (err) {
 		console.error(err.error);

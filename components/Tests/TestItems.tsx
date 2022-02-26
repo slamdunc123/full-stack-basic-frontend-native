@@ -8,6 +8,7 @@ import {
 	StatusBar,
 	Alert,
 	TouchableOpacity,
+	ActivityIndicator,
 } from 'react-native';
 
 interface TestItem {
@@ -23,10 +24,12 @@ interface Test {
 }
 
 interface TestItemsProps {
+	title: string;
 	tests: Test[];
+	handleDeleteOnPress: (id: string) => void;
 }
 
-const TestItems = ({ tests }: TestItemsProps) => {
+const TestItems = ({ title, tests, handleDeleteOnPress }: TestItemsProps) => {
 	const renderItems = ({ item }: TestItem) => {
 		return (
 			<View style={styles.item}>
@@ -39,7 +42,7 @@ const TestItems = ({ tests }: TestItemsProps) => {
 						<Text style={styles.buttonText}>Edit</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
-						onPress={() => Alert.alert('delete button pressed')}
+						onPress={() => handleDeleteOnPress(item._id)}
 						style={styles.buttonDelete}
 					>
 						<Text style={styles.buttonText}>Delete</Text>
@@ -51,17 +54,26 @@ const TestItems = ({ tests }: TestItemsProps) => {
 
 	return (
 		<View style={styles.container}>
+			<Text style={styles.title}>{title}</Text>
+
 			{tests.length > 0 ? (
 				<FlatList
 					data={tests}
 					renderItem={renderItems}
 					keyExtractor={(item) => item._id}
-					// contentContainerStyle={{flexGrow: 1, justifyContent: 'center',}}
 				/>
 			) : (
-				<Text>nothing to show</Text>
+				<ActivityIndicator
+					size='large'
+					color='#1976d2'
+				/>
 			)}
-			{/* <StatusBar style='auto' /> */}
+			<StatusBar
+				backgroundColor='#1976d2'
+				barStyle='light-content'
+				hidden={false}
+				translucent={true}
+			/>
 		</View>
 	);
 };
@@ -72,6 +84,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		marginTop: StatusBar.currentHeight || 0,
+	},
+	title: {
+		fontSize: 48,
+		fontWeight: 'bold',
 	},
 	item: {
 		backgroundColor: '#fff',
