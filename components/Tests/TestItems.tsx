@@ -1,4 +1,5 @@
 // import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import {
 	StyleSheet,
 	Text,
@@ -8,28 +9,25 @@ import {
 	Alert,
 	TouchableOpacity,
 } from 'react-native';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
 
-interface Test {
+interface TestItem {
 	item: {
 		_id: string;
 		name: string;
 	};
 }
 
-const TestItems = () => {
-	const [tests, setTests] = useState([]);
+interface Test {
+	_id: string;
+	name: string;
+}
 
-	const fetchData = async () => {
-		const res = await axios.get(
-			'https://full-stack-basic-backend.herokuapp.com/api/tests'
-		);
-		setTests(res.data);
-		console.log(res.data);
-	};
+interface TestItemsProps {
+	tests: Test[];
+}
 
-	const renderItems = ({ item }: Test) => {
+const TestItems = ({ tests }: TestItemsProps) => {
+	const renderItems = ({ item }: TestItem) => {
 		return (
 			<View style={styles.item}>
 				<Text style={styles.name}>{item.name}</Text>
@@ -50,10 +48,6 @@ const TestItems = () => {
 			</View>
 		);
 	};
-
-	useEffect(() => {
-		fetchData();
-	}, []);
 
 	return (
 		<View style={styles.container}>
