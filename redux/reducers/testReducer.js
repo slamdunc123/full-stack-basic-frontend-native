@@ -1,4 +1,4 @@
-import { GET_TESTS, DELETE_TEST } from '../actions/types';
+import { GET_TESTS, CREATE_TEST, DELETE_TEST } from '../actions/types';
 
 const initialState = {
 	tests: [],
@@ -13,6 +13,13 @@ export default function testReducer(state = initialState, action) {
 			return {
 				...state,
 				tests: payload,
+			};
+
+		case CREATE_TEST:
+			console.log('CREATE_TEST called', payload);
+			return {
+				...state,
+				tests: [...state.tests, payload],
 			};
 
 		case DELETE_TEST:
